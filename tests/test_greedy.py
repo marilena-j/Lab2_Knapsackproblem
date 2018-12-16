@@ -9,6 +9,7 @@ class TestGreedy(unittest.TestCase):
     def test_greedy_single(self):
         items = create_items([2,3,5,7,1,4,1], [10,5,15,7,6,18,3])
         result = greedy.greedy_multiple_knapsacks([15], items)
+        print(result[1])
         self.assertEqual(result[0], 52)
 
     def test_greedy_mutiple(self):
