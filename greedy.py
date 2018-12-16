@@ -5,7 +5,9 @@ class Item:
         self.relative_benefit = round(value/weight, 2)
 
     def __gt__(self, item):
-        return self.relative_benefit > item.relative_benefit and self.weight < item.weight
+        if self.relative_benefit == item.relative_benefit:
+            return self.weight < item.weight
+        return self.relative_benefit > item.relative_benefit
 
     def __eq__(self, item):
         return self.relative_benefit == item.relative_benefit and self.weight == item.weight
@@ -18,10 +20,9 @@ Basic greedy multiple knapsacks algorithem
 """
 def greedy_multiple_knapsacks(capacities, items):
     knapsacks = []  # list of m knapsacks 
-    numOfKnap = len(capacities) # m
     mkp = 0 #final value in the knapsack(s)
     
-    for i in range(numOfKnap):
+    for i in range(len(capacities)):
         knapsacks.append([]) #each knapsack gets a list for the items
     
     # Sorting list
