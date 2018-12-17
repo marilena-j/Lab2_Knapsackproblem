@@ -73,25 +73,3 @@ def greedy_multiple_knapsacks(capacities, items):
 
     #complete list of knapsacks content and final value
     return mkp, knapsacks
-
-"""
-Neighbouring algorithem
-"""
-def neighbouring_search(capacities, items):
-    resoult_value, result_knapsacks = greedy_multiple_knapsacks(capacities, items)
-        
-    #
-    # Neighborhood is difined by certain operation.
-    # for example, we go through whole solition and swap
-    # elements between each other. We create n (n = num of items) of this solutions.
-    # This would create a new neighberhood.
-    #
-    # Then we check through all of the solutions and try to find best one.
-    # On the end, we compare best one if it's also better than previous
-    # neigborhood best solution. If it is, this is new global_max and we go in to the search of new 
-    # neighborhood, else we end the search (or change flip num and repeat !improvement).
-    #
-
-    #for _ in range(100):
-
-    return resoult_value, result_knapsacks
