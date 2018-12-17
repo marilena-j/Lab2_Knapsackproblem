@@ -58,13 +58,11 @@ def greedy_multiple_knapsacks(capacities, items):
     for capacity in capacities:
         knapsacks.append(Knapsack(capacity)) #each knapsack gets a list for the items
     
-    # Sorting list
-    # First value in tuple is relativeBenefit whitch should be sorted highest
-    # Second value is weight which should be sorted by lowest first (that's why we do -value)  
+    # Sort the items 
     items.sort(reverse=True)
    
-    #each item is tried to fit in one knapsack
-    #when the capacity of one knapsack is big enough - the item is put inside and is removed from the itemlist
+    # each item is tried to fit in an knapsack
+    # when the capacity of one knapsack is big enough - the item is put inside and is removed from the items
     for _ in range(len(items)):
         current_item = items[0]
         for knapsack in knapsacks:
@@ -79,8 +77,8 @@ def greedy_multiple_knapsacks(capacities, items):
 """
 Neighbouring algorithem
 """
-def neighbouring_search(capacities, weights, benefits):
-    resoult_value, result_knapsacks = greedy_multiple_knapsacks(capacities, weights, benefits)
+def neighbouring_search(capacities, items):
+    resoult_value, result_knapsacks = greedy_multiple_knapsacks(capacities, items)
         
     #
     # Neighborhood is difined by certain operation.
