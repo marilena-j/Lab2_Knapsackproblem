@@ -7,7 +7,7 @@ seed = 4523
 generator = Random(seed)
 
 def create_items(weights, values):
-    return [ greedy.Item(values[i], weights[i]) for i in range(len(weights))]
+    return [ greedy.Item(values[i], weights[i], i) for i in range(len(weights))]
 
 def generate(num, min, max):
     return [generator.randint(min, max) for _ in range(num)]
@@ -19,7 +19,18 @@ class TestPerformance(unittest.TestCase):
         weights = generate(100, 1, 10)
         knapsacks = generate(20, 5, 15)
 
-        result_greedy = greedy.greedy_multiple_knapsacks(knapsacks, create_items(values[:], weights[:]))
-        result_neighborhood = neighborhood.neighborhoodSearch(weights, values[:], knapsacks[:])
+        value_greedy, _ = greedy.greedy_multiple_knapsacks(knapsacks, create_items(values[:], weights[:]))
+        value_neighborhood, _ = neighborhood.neighborhoodSearch(weights, values[:], knapsacks[:])
 
-        print(result_greedy, result_neighborhood)
+        self.assertGreaterEqual(value_neighborhood, value_greedy)
+
+
+    def test_1000_200_random(self):
+        values = generate(1000, 1, 20)
+        weights = generate(1000, 1, 10)
+        knapsacks = generate(200, 5, 15)
+
+        value_greedy, _ = greedy.greedy_multiple_knapsacks(knapsacks, create_items(values[:], weights[:]))
+        value_neighborhood, _ = neighborhood.neighborhoodSearch(weights, values[:], knapsacks[:])
+
+        self.assertGreaterEqual(value_neighborhood, value_greedy)

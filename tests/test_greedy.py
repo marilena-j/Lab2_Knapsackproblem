@@ -2,7 +2,7 @@ import unittest
 import greedy
 
 def create_items(weights, values):
-    return [ greedy.Item(values[i], weights[i]) for i in range(len(weights))]
+    return [ greedy.Item(values[i], weights[i], i) for i in range(len(weights))]
 
 class TestGreedy(unittest.TestCase):
 

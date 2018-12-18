@@ -1,5 +1,6 @@
 from random import Random
 import numpy as np
+import greedy
 
 seed = 4523
 generator = Random(seed)
@@ -42,20 +43,8 @@ It runnes neighborhood search algorithem N times. Each time it starts in a diffe
 starting point. We return the best solution we find.
 """
 def neighborhoodSearch(weights, values, knapsacks):
-    bestSolutionValue, bestSolution, bestSolutionValid = neighborhoodSearchIteration(weights, values, knapsacks)
-
-    for _ in range(5000):
-        value, solution, valid = neighborhoodSearchIteration(weights, values, knapsacks)
-
-        if valid and value > bestSolutionValue:
-            bestSolutionValue = value
-            bestSolution = solution
-            bestSolutionValid = True
-    
-    if not bestSolutionValid:
-        raise Exception("We found invalid solution...")
-
-    return bestSolutionValue, bestSolution
+    value, solution = neighborhoodSearchIteration(weights, values, knapsacks)
+    return value, solution
 
 """
 One iteration of neighborhood search algorithem
@@ -68,12 +57,11 @@ But, if in neighborhood there isn't any solution better than global maximum, the
 and return the found global maximum.
 """
 def neighborhoodSearchIteration(weights, values, knapsacks):
-    globalMax = randomSolution(len(weights), len(knapsacks))
-    globalMaxValid, globalMaxVal = evaluate(globalMax, values, weights, knapsacks)
+    globalMax = solutionFromGreedy(weights, values, knapsacks)
+    _, globalMaxVal = evaluate(globalMax, values, weights, knapsacks)
 
     localMax = globalMax
     localMaxVal = globalMaxVal
-    localMaxValid = globalMaxValid
     
     while True:
         neighborhood = buildNeighborhood(globalMax, len(knapsacks))
@@ -81,19 +69,17 @@ def neighborhoodSearchIteration(weights, values, knapsacks):
         for solution in neighborhood:
             valid, totalValue = evaluate(solution, values, weights, knapsacks)
 
-            if valid and (totalValue > localMaxVal or not localMaxValid):
+            if valid and totalValue > localMaxVal:
                 localMaxVal = totalValue
                 localMax = solution
-                localMaxValid = True
 
-        if localMaxVal > globalMaxVal or localMaxValid and not globalMaxValid:
+        if localMaxVal > globalMaxVal:
             globalMaxVal = localMaxVal
             globalMax = localMax
-            globalMaxValid = True
         else:
             break
     
-    return globalMaxVal, globalMax, globalMaxValid
+    return globalMaxVal, globalMax
 
 """
 Creates a random solution that we use as a starting point
@@ -103,5 +89,21 @@ def randomSolution(numOfItems, numOfKnap):
 
     for i in range(numOfItems):
         solution.append(generator.randint(0, numOfKnap))
+
+    return solution
+
+"""
+Create solution from a gready one
+"""
+def solutionFromGreedy(weights, values, knapsacks):
+    items = [ greedy.Item(values[i], weights[i], i) for i in range(len(weights))]
+
+    _, greedy_solution = greedy.greedy_multiple_knapsacks(knapsacks, items)
+
+    solution = [ 0 for i in range(len(weights))]
+
+    for i in range(len(greedy_solution)):
+        for item in greedy_solution[i].items:
+            solution[item.position] = i + 1
 
     return solution

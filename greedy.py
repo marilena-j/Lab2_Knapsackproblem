@@ -2,9 +2,10 @@
 Basic value holder for item
 """
 class Item:
-    def __init__(self, value: int, weight: int):
+    def __init__(self, value: int, weight: int, position: int):
         self.value = value
         self.weight = weight
+        self.position = position
         self.relative_benefit = round(value/weight, 2)
 
     def __gt__(self, item):
