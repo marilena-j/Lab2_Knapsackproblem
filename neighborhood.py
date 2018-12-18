@@ -38,17 +38,13 @@ def buildNeighborhood(solution, numOfKnap):
 
     return solutions
 
-"""
-It runnes neighborhood search algorithem N times. Each time it starts in a different
-starting point. We return the best solution we find.
-"""
+
 def neighborhoodSearch(weights, values, knapsacks):
     value, solution = neighborhoodSearchIteration(weights, values, knapsacks)
     return value, solution
 
 """
-One iteration of neighborhood search algorithem
-It creates randomSolution and then using that builds a Neighborhood
+One iteration of neighborhood search algorithm
 
 When we have a neighborhood, we go through the solutions, if there is anyone
 better than current global maximum, we set that solution as global maximum and create
