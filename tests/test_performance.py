@@ -21,7 +21,9 @@ class TestPerformance(unittest.TestCase):
 
         value_greedy, _ = greedy.greedy_multiple_knapsacks(knapsacks, create_items(values[:], weights[:]))
         value_neighborhood, _ = neighborhood.neighborhoodSearch(weights, values[:], knapsacks[:])
+        value_neighborhood_tabu, _ = neighborhood.neighborhoodSearch(weights, values[:], knapsacks[:], 'tabu')
 
+        print(value_greedy, value_neighborhood, value_neighborhood_tabu)
         self.assertGreaterEqual(value_neighborhood, value_greedy)
 
 
@@ -32,5 +34,7 @@ class TestPerformance(unittest.TestCase):
 
         value_greedy, _ = greedy.greedy_multiple_knapsacks(knapsacks, create_items(values[:], weights[:]))
         value_neighborhood, _ = neighborhood.neighborhoodSearch(weights, values[:], knapsacks[:])
+        value_neighborhood_tabu, _ = neighborhood.neighborhoodSearch(weights, values[:], knapsacks[:], 'tabu')
 
+        print(value_greedy, value_neighborhood, value_neighborhood_tabu)
         self.assertGreaterEqual(value_neighborhood, value_greedy)
