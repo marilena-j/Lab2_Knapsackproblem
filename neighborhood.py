@@ -4,11 +4,13 @@ import numpy as np
 seed = 4523
 generator = Random(seed)
 
+"""
+Evaluates a solution, calculates if it is valid and what is it's total value.
+"""
 def evaluate(solution, values, weights, knapsacks):
     totalValue = 0
 
     for knapsack in range(len(knapsacks)):
-
         weight = 0
         for i in range(len(solution)):
             if solution[i] == knapsack + 1:
@@ -20,11 +22,13 @@ def evaluate(solution, values, weights, knapsacks):
         
     return True, totalValue
 
+"""
+It builds a neighborhood from a solution.
+"""
 def buildNeighborhood(solution, numOfKnap):
-    numOfSolutions = len(solution)
     solutions = []
 
-    for i in range(numOfSolutions):
+    for i in range(len(solution)):
         solutions.append(solution[:])
         if solutions[i][i] >= numOfKnap:
             solutions[i][i] = 0
@@ -33,6 +37,10 @@ def buildNeighborhood(solution, numOfKnap):
 
     return solutions
 
+"""
+It runnes neighborhood search algorithem N times. Each time it starts in a different
+starting point. We return the best solution we find.
+"""
 def neighborhoodSearch(weights, values, knapsacks):
     bestSolutionValue, bestSolution, bestSolutionValid = neighborhoodSearchIteration(weights, values, knapsacks)
 
@@ -49,6 +57,16 @@ def neighborhoodSearch(weights, values, knapsacks):
 
     return bestSolutionValue, bestSolution
 
+"""
+One iteration of neighborhood search algorithem
+It creates randomSolution and then using that builds a Neighborhood
+
+When we have a neighborhood, we go through the solutions, if there is anyone
+better than current global maximum, we set that solution as global maximum and create
+another neighborhood from that and repeat the steps.
+But, if in neighborhood there isn't any solution better than global maximum, then we break
+and return the found global maximum.
+"""
 def neighborhoodSearchIteration(weights, values, knapsacks):
     globalMax = randomSolution(len(weights), len(knapsacks))
     globalMaxValid, globalMaxVal = evaluate(globalMax, values, weights, knapsacks)
@@ -57,7 +75,7 @@ def neighborhoodSearchIteration(weights, values, knapsacks):
     localMaxVal = globalMaxVal
     localMaxValid = globalMaxValid
     
-    for _ in range(100):
+    while True:
         neighborhood = buildNeighborhood(globalMax, len(knapsacks))
 
         for solution in neighborhood:
@@ -77,6 +95,9 @@ def neighborhoodSearchIteration(weights, values, knapsacks):
     
     return globalMaxVal, globalMax, globalMaxValid
 
+"""
+Creates a random solution that we use as a starting point
+"""
 def randomSolution(numOfItems, numOfKnap):
     solution = []
 
